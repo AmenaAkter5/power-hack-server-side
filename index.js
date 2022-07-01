@@ -145,25 +145,21 @@ async function run() {
 
         // update billing
 
-        /* app.put('/api/update-billing/:id', async (req, res) => {
+        app.put('/api/update-billing/:id', async (req, res) => {
 
             const id = req.params.id;
             const updatedItem = req.body;
-            console.log(id)
-            console.log(updatedItem)
 
             const filter = { _id: ObjectId(id) };
-            const options = { upsert: true }; */
+            const options = { upsert: true };
 
-        // const updatedDoc = {
-        //     $set: updatedItem.bill
-        /* $set: {
-            available: updatedItem.quantity,
-        } */
-        // };
-        // const result = await toolsCollection.updateOne(filter, updatedDoc, options);
-        // res.send(result);
-        // })
+            const updatedDoc = {
+                $set: updatedItem
+            };
+            // console.log(updatedDoc);
+            const result = await billCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        })
 
 
         // delete data : delete a specific bill
