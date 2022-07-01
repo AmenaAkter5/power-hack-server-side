@@ -156,7 +156,7 @@ async function run() {
             const updatedDoc = {
                 $set: updatedItem
             };
-            // console.log(updatedDoc);
+
             const result = await billCollection.updateOne(filter, updatedDoc, options);
             res.send(result);
         })
