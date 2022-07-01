@@ -1,12 +1,11 @@
-// require express, cors, mongodb, jwt and dotenv to secure database pass
+
+// require express, cors, mongodb, jwt, bcrypt and dotenv to secure database pass
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt')
-
-
+require('dotenv').config();
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 
 // declare app and port
@@ -84,7 +83,15 @@ async function run() {
                 throw error
             }
 
-            res.json({ status: 'ok' })
+            // res.json({ status: 'ok' })
+
+            // token issue
+            const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
+
+            // res.send({ result, token });
+
+            return res.json({ status: 'ok', data: token })
+
         })
 
 
@@ -129,13 +136,15 @@ async function run() {
 
 
         // get bills
+
         app.get('/api/billing-list', async (req, res) => {
             const bills = await billCollection.find().toArray();
             res.send(bills);
-        })
+        });
 
 
         // add billing
+
         app.post('/api/add-billing', async (req, res) => {
             const bill = req.body;
             const result = await billCollection.insertOne(bill);
@@ -163,6 +172,7 @@ async function run() {
 
 
         // delete data : delete a specific bill
+
         app.delete('/api/delete-billing/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
