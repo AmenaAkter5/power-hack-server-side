@@ -128,6 +128,12 @@ async function run() {
         =============================================== */
 
 
+        // get bills
+        app.get('/api/billing-list', async (req, res) => {
+            const bills = await billCollection.find().toArray();
+            res.send(bills);
+        })
+
 
         // add billing
         app.post('/api/add-billing', async (req, res) => {
