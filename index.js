@@ -37,6 +37,14 @@ async function run() {
         // create user collection
         const userCollection = client.db("power_hack").collection("users")
 
+        // create bill collection
+        const billCollection = client.db("power_hack").collection("bills")
+
+
+
+        /* ========= User Collection API ==============
+        =============================================== */
+
 
         // user registration api
 
@@ -113,6 +121,20 @@ async function run() {
 
             res.json({ status: 'error', error: 'Invalid username/password' })
         })
+
+
+
+        /* ========= Bill Collection API ==============
+        =============================================== */
+
+
+
+        // add billing
+        app.post('/api/add-billing', async (req, res) => {
+            const bill = req.body;
+            const result = await billCollection.insertOne(bill);
+            res.send({ success: true, result });
+        });
 
 
     }
