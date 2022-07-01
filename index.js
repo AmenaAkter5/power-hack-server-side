@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt')
 
@@ -141,6 +141,38 @@ async function run() {
             const result = await billCollection.insertOne(bill);
             res.send({ success: true, result });
         });
+
+
+        // update billing
+
+        /* app.put('/api/update-billing/:id', async (req, res) => {
+
+            const id = req.params.id;
+            const updatedItem = req.body;
+            console.log(id)
+            console.log(updatedItem)
+
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true }; */
+
+        // const updatedDoc = {
+        //     $set: updatedItem.bill
+        /* $set: {
+            available: updatedItem.quantity,
+        } */
+        // };
+        // const result = await toolsCollection.updateOne(filter, updatedDoc, options);
+        // res.send(result);
+        // })
+
+
+        // delete data : delete a specific bill
+        app.delete('/api/delete-billing/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await billCollection.deleteOne(query);
+            res.send(result);
+        })
 
 
     }
