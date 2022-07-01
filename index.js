@@ -135,11 +135,31 @@ async function run() {
         =============================================== */
 
 
-        // get bills
-
         app.get('/api/billing-list', async (req, res) => {
-            const bills = await billCollection.find().toArray();
+            const page = parseInt(req.query.existPage)
+            const size = parseInt(req.query.pageSize)
+
+            const query = {};
+            const cursor = billCollection.find(query);
+
+            let bills;
+            if (page || size) {
+                bills = await cursor.skip(page * size).limit(size).toArray();
+            }
+
+            else {
+                bills = await cursor.toArray();
+            }
+
+
             res.send(bills);
+        });
+
+
+        // to create pagination
+        app.get('/billCount', async (req, res) => {
+            const count = await billCollection.estimatedDocumentCount();
+            res.send({ count })
         });
 
 
